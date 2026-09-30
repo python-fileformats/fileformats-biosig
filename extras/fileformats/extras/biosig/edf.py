@@ -4,9 +4,9 @@ from pathlib import Path
 
 import mne.export
 import mne.io
-from fileformats.core import FileSet, extra_implementation
+from fileformats.core import FileSet, Loaded, extra_implementation
 
-from fileformats.biosig import Biosig, Edf, EdfPlus
+from fileformats.biosig import Biosig, Edf, EdfPlus, MneAnonymizeRecipe
 
 from .utils import mne_deidentify
 
@@ -33,13 +33,13 @@ def edf_plus_read_metadata(edf: EdfPlus, **kwargs: ty.Any) -> ty.Mapping[str, ty
 def edf_deidentify(
     edf: Edf,
     out_dir: os.PathLike[str],
-    spec: ty.Any = None,
+    recipe: Loaded[MneAnonymizeRecipe] | None = None,
     **kwargs: ty.Any,
 ) -> Edf:
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     raw = mne.io.read_raw_edf(edf, preload=True, verbose=False)
-    raw.info = mne_deidentify(raw, spec)
+    raw.info = mne_deidentify(raw, recipe)
     deid_fspath = out_dir / "eeg.edf"
     mne.export.export_raw(deid_fspath, raw, fmt="edf", overwrite=True)
     return type(edf)(deid_fspath)
