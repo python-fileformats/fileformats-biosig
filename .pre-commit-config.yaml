@@ -32,4 +32,4 @@ repos:
       - id: mypy
         args: [--strict, --install-types, --non-interactive]
         exclude: tests
-        additional_dependencies: [pytest, fileformats]
+        additional_dependencies: [pytest, fileformats >= 0.19]

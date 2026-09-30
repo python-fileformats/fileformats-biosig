@@ -1,13 +1,13 @@
-import json
-import typing as ty
-
 import mne
 import mne.io
+from fileformats.core import Loaded
+
+from fileformats.biosig import MneAnonymizeRecipe
 
 
 def mne_deidentify(
     raw: mne.io.BaseRaw,
-    spec: ty.Any = None,
+    recipe: Loaded[MneAnonymizeRecipe] | None = None,
 ) -> mne.Info:
     """Anonymize an MNE Raw object and return the deidentified Info.
 
@@ -15,5 +15,11 @@ def mne_deidentify(
     trail) should diff `metadata` before and after instead of relying on this
     function to report it, since that works uniformly across formats.
     """
-    kwargs = json.load(open(spec)) if spec is not None else {}
-    return mne.io.anonymize_info(raw.info, verbose=None, **kwargs)
+    if recipe is None:
+        recipe = {}
+    if not isinstance(recipe, dict):
+        raise TypeError(
+            "MNE anonymization recipe must be a JSON object of keyword arguments to "
+            f"mne.io.anonymize_info, not {type(recipe).__name__}"
+        )
+    return mne.io.anonymize_info(raw.info, verbose=None, **recipe)

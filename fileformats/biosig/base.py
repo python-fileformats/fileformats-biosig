@@ -1,7 +1,7 @@
 import os
 import typing as ty
 
-from fileformats.core import FileSet, extra
+from fileformats.core import FileSet, Loaded, extra
 
 
 class Biosig(FileSet):
@@ -11,7 +11,7 @@ class Biosig(FileSet):
     def deidentify(
         self,
         out_dir: os.PathLike[str],
-        spec: ty.Any = None,
+        recipe: Loaded[FileSet] | None = None,
         **kwargs: ty.Any,
     ) -> ty.Self:
         """
@@ -29,11 +29,12 @@ class Biosig(FileSet):
         ----------
         out_dir: PathLike[str]
             The directory where the deidentified dataset should be saved
-        spec: Any, optional
-            A specification for the deidentification process, which may include details on
-            which fields to remove or how to handle certain types of data. The exact
-            structure of this specification will depend on the specific image format and the
-            requirements of the deidentification process.
+        recipe: Loaded[FileSet], optional
+            A recipe for the deidentification process, loaded from a format that depends
+            on the implementation (e.g. `MneAnonymizeRecipe` for formats read with MNE).
+            Implementations annotate it with ``Loaded[<recipe format>]``, or ``None`` if
+            they don't take a recipe, so callers can find the format to load the recipe
+            from with ``find_extra_implementation`` and ``LoadedMarker.from_hint``
         **kwargs: Any
             Additional format-specific keyword arguments (e.g. concurrency options),
             which implementations that don't use them should accept and ignore

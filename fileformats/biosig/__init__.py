@@ -15,6 +15,7 @@ from .edf import (
     Edf,
     EdfPlus,
 )
+from .recipe import MneAnonymizeRecipe
 
 from ._version import __version__
 
@@ -25,4 +26,5 @@ __all__ = [
     "Edf",
     "EdfPlus",
     "Meg",
+    "MneAnonymizeRecipe",
 ]

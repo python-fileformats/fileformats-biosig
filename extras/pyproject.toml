@@ -8,23 +8,21 @@ description = "Extra methods for accessing and manipulating the underlying data 
 readme = "README.rst"
 requires-python = ">=3.11"
 dependencies = [
-    "fileformats >= 0.17",
+    "fileformats >= 0.19",
+    "fileformats-extras",  # for loading MneAnonymizeRecipe (JSON)
     "mne >= 1.11.0",
-    "pydra >= 1.0a7"
+    "pydra >= 1.0a7",
 ]
 license = { file = "LICENSE" }
 authors = [
     { name = "Miao Cao", email = "miaocao@swin.edu.au" },
-    { name = "Thomas G. Close", email = "tom.g.close@gmail.com" }
+    { name = "Thomas G. Close", email = "tom.g.close@gmail.com" },
 ]
 maintainers = [
     { name = "Miao Cao", email = "miaocao@swin.edu.au" },
-    { name = "Thomas G. Close", email = "tom.g.close@gmail.com" }
+    { name = "Thomas G. Close", email = "tom.g.close@gmail.com" },
 ]
-keywords = [
-    "file formats",
-    "data",
-]
+keywords = ["file formats", "data"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
@@ -42,29 +40,17 @@ classifiers = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-dev = [
-    "black",
-    "pre-commit",
-    "codespell",
-    "flake8",
-    "flake8-pyproject",
-]
-test = [
-    "pytest >=6.2.5",
-    "pytest-env>=0.6.2",
-    "pytest-cov>=2.12.1",
-    "codecov",
-]
+dev = ["black", "pre-commit", "codespell", "flake8", "flake8-pyproject"]
+test = ["pytest >=6.2.5", "pytest-env>=0.6.2", "pytest-cov>=2.12.1", "codecov"]
 
-converters = [
-]
+converters = []
 
 [project.urls]
 repository = "https://github.com/ArcanaFramework/fileformats-biosig"
 
 [tool.hatch.version]
 source = "vcs"
-raw-options = {root = ".."}
+raw-options = { root = ".." }
 
 [tool.hatch.build.hooks.vcs]
 version-file = "fileformats/extras/biosig/_version.py"
@@ -73,7 +59,7 @@ version-file = "fileformats/extras/biosig/_version.py"
 packages = ["fileformats"]
 
 [tool.black]
-target-version = ['py310']
+target-version = ['py311']
 exclude = "fileformats/extras/biosig/_version.py"
 
 [tool.codespell]
@@ -81,9 +67,7 @@ ignore-words = ".codespell-ignorewords"
 
 [tool.flake8]
 doctests = true
-per-file-ignores = [
-    "__init__.py:F401"
-]
+per-file-ignores = ["__init__.py:F401"]
 max-line-length = 88
 select = "C,E,F,W,B,B950"
 extend-ignore = ['E203', 'E501', 'E129']
