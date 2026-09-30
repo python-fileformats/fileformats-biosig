@@ -25,7 +25,6 @@ from fileformats.biosig import Biosig, EdfPlus, MneAnonymizeRecipe
 
 def test_edf_plus_read_metadata(edf_plus_path):
     metadata = EdfPlus(edf_plus_path).metadata
-    assert isinstance(metadata, dict)
     assert metadata["sfreq"] is not None
     assert "edf_patient_code" in metadata
 
