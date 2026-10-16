@@ -8,7 +8,7 @@ from fileformats.core import FileSet, Loaded, extra_implementation
 
 from fileformats.biosig import Biosig, Edf, EdfPlus, MneAnonymizeRecipe
 
-from .utils import mne_deidentify
+from .utils import deidentified_stem, mne_deidentify
 
 
 @extra_implementation(FileSet.read_metadata)
@@ -40,9 +40,8 @@ def edf_deidentify(
     out_dir.mkdir(parents=True, exist_ok=True)
     raw = mne.io.read_raw_edf(edf, preload=True, verbose=False)
     raw.info = mne_deidentify(raw, recipe)
-    # Keep the original name, so it still matches the layout of any format it is
-    # nested within
-    deid_fspath = out_dir / edf.fspath.name
+    # Renamed, as the original name may include the subject's name
+    deid_fspath = out_dir / f"{deidentified_stem(edf.fspath)}{edf.fspath.suffix}"
     mne.export.export_raw(deid_fspath, raw, fmt="edf", overwrite=True)
     return type(edf)(deid_fspath)
 
