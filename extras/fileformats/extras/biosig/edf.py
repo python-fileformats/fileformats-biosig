@@ -40,7 +40,9 @@ def edf_deidentify(
     out_dir.mkdir(parents=True, exist_ok=True)
     raw = mne.io.read_raw_edf(edf, preload=True, verbose=False)
     raw.info = mne_deidentify(raw, recipe)
-    deid_fspath = out_dir / "eeg.edf"
+    # Keep the original name, so it still matches the layout of any format it is
+    # nested within
+    deid_fspath = out_dir / edf.fspath.name
     mne.export.export_raw(deid_fspath, raw, fmt="edf", overwrite=True)
     return type(edf)(deid_fspath)
 
